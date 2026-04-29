@@ -40,6 +40,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             e.Property(i => i.PaymentStatus).HasConversion<string>();
             e.HasOne(i => i.Vendor).WithMany(v => v.Invoices).HasForeignKey(i => i.VendorId).OnDelete(DeleteBehavior.Restrict);
             e.HasOne(i => i.CreatedBy).WithMany(u => u.CreatedInvoices).HasForeignKey(i => i.CreatedByUserId).OnDelete(DeleteBehavior.Restrict);
+            e.HasOne(i => i.ReviewedBy).WithMany(u => u.ReviewedInvoices).HasForeignKey(i => i.ReviewedByUserId).IsRequired(false).OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<InvoiceItem>(e =>

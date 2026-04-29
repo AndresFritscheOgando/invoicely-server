@@ -14,6 +14,7 @@ public class User
     public DateTime UpdatedAt { get; set; }
 
     public ICollection<Invoice> CreatedInvoices { get; set; } = [];
+    public ICollection<Invoice> ReviewedInvoices { get; set; } = [];
     public ICollection<Payment> Payments { get; set; } = [];
     public ICollection<InvoiceComment> Comments { get; set; } = [];
     public ICollection<AuditLog> AuditLogs { get; set; } = [];

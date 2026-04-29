@@ -38,6 +38,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("AdminOnly", p => p.RequireRole("Admin"));
     options.AddPolicy("FinanceOrAdmin", p => p.RequireRole("Admin", "FinanceManager"));
     options.AddPolicy("AllRoles", p => p.RequireRole("Admin", "FinanceManager", "Employee", "Viewer"));
+    options.AddPolicy("CanCreateInvoice", p => p.RequireRole("Admin", "FinanceManager", "Employee"));
 });
 
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
@@ -45,6 +46,8 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IVendorService, VendorService>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 builder.Services.AddCors(options =>
 {

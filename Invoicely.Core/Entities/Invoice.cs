@@ -19,8 +19,13 @@ public class Invoice
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
+    public Guid? ReviewedByUserId { get; set; }
+    public DateTime? ReviewedAt { get; set; }
+    public string? RejectionReason { get; set; }
+
     public Vendor Vendor { get; set; } = null!;
     public User CreatedBy { get; set; } = null!;
+    public User? ReviewedBy { get; set; }
     public ICollection<InvoiceItem> Items { get; set; } = [];
     public ICollection<Payment> Payments { get; set; } = [];
     public ICollection<InvoiceComment> Comments { get; set; } = [];
