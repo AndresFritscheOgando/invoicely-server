@@ -1,0 +1,16 @@
+# build
+bin/
+obj/
+
+# env
+*.env
+appsettings.*.json
+!appsettings.json
+
+# vs
+.vs/
+*.user
+
+# claude
+CLAUDE.md
+AGENTS.md
