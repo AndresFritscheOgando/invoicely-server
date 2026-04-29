@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Invoicely.Api/Invoicely.Api.csproj" />
+  <Project Path="Invoicely.Core/Invoicely.Core.csproj" />
+  <Project Path="Invoicely.Infrastructure/Invoicely.Infrastructure.csproj" />
+</Solution>

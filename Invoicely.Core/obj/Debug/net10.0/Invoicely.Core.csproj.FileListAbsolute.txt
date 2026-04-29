@@ -1,0 +1,11 @@
+D:\Workflow\repos\invoicely\backend\Invoicely.Core\bin\Debug\net10.0\Invoicely.Core.deps.json
+D:\Workflow\repos\invoicely\backend\Invoicely.Core\bin\Debug\net10.0\Invoicely.Core.dll
+D:\Workflow\repos\invoicely\backend\Invoicely.Core\bin\Debug\net10.0\Invoicely.Core.pdb
+D:\Workflow\repos\invoicely\backend\Invoicely.Core\obj\Debug\net10.0\Invoicely.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\Workflow\repos\invoicely\backend\Invoicely.Core\obj\Debug\net10.0\Invoicely.Core.AssemblyInfoInputs.cache
+D:\Workflow\repos\invoicely\backend\Invoicely.Core\obj\Debug\net10.0\Invoicely.Core.AssemblyInfo.cs
+D:\Workflow\repos\invoicely\backend\Invoicely.Core\obj\Debug\net10.0\Invoicely.Core.csproj.CoreCompileInputs.cache
+D:\Workflow\repos\invoicely\backend\Invoicely.Core\obj\Debug\net10.0\Invoicely.Core.dll
+D:\Workflow\repos\invoicely\backend\Invoicely.Core\obj\Debug\net10.0\refint\Invoicely.Core.dll
+D:\Workflow\repos\invoicely\backend\Invoicely.Core\obj\Debug\net10.0\Invoicely.Core.pdb
+D:\Workflow\repos\invoicely\backend\Invoicely.Core\obj\Debug\net10.0\ref\Invoicely.Core.dll
