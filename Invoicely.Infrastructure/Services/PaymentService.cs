@@ -71,6 +71,15 @@ public class PaymentService(AppDbContext db) : IPaymentService
             ? PaymentStatus.Paid
             : PaymentStatus.PartiallyPaid;
 
+        db.AuditLogs.Add(new AuditLog
+        {
+            UserId = userId,
+            EntityType = nameof(Invoice),
+            EntityId = invoiceId,
+            Action = AuditAction.PaymentAdded,
+            NewValue = $"Payment {request.Amount:0.00} {invoice.Currency} via {method} on {paymentDate:yyyy-MM-dd}.",
+        });
+
         await db.SaveChangesAsync(ct);
         await db.Entry(payment).Reference(p => p.CreatedBy).LoadAsync(ct);
 
@@ -110,6 +119,15 @@ public class PaymentService(AppDbContext db) : IPaymentService
             : remainingTotal >= invoice.Amount
                 ? PaymentStatus.Paid
                 : PaymentStatus.PartiallyPaid;
+
+        db.AuditLogs.Add(new AuditLog
+        {
+            UserId = userId,
+            EntityType = nameof(Invoice),
+            EntityId = invoiceId,
+            Action = AuditAction.PaymentDeleted,
+            OldValue = $"Deleted payment {payment.Amount:0.00} {invoice.Currency} from {payment.PaymentDate:yyyy-MM-dd}.",
+        });
 
         await db.SaveChangesAsync(ct);
     }

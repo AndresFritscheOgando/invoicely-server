@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Invoicely.Api.Controllers;
 
+/// <summary>Vendor management. Create, update, delete, and change status.</summary>
 [ApiController]
 [Route("api/vendors")]
 [Authorize]

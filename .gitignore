@@ -11,6 +11,11 @@ appsettings.*.json
 .vs/
 *.user
 
+# runtime
+.dotnet-home/
+*.log
+
 # claude
 CLAUDE.md
 AGENTS.md
+.gstack/

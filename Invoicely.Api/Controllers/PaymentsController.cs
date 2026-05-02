@@ -7,6 +7,7 @@ using System.Security.Claims;
 
 namespace Invoicely.Api.Controllers;
 
+/// <summary>Payment recording and deletion for approved invoices.</summary>
 [ApiController]
 [Route("api/invoices/{invoiceId:guid}/payments")]
 [Authorize]

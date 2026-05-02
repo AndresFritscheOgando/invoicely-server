@@ -9,10 +9,13 @@ public enum AuditAction
     InvoicePaid,
     InvoiceCancelled,
     InvoiceUpdated,
+    InvoiceDeleted,
+    InvoiceCommentAdded,
     VendorCreated,
     VendorUpdated,
     VendorDeleted,
     PaymentAdded,
+    PaymentDeleted,
     UserCreated,
     UserUpdated
 }

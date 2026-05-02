@@ -7,6 +7,7 @@ using System.Security.Claims;
 
 namespace Invoicely.Api.Controllers;
 
+/// <summary>Invoice CRUD, approval workflow, comments, and audit logs.</summary>
 [ApiController]
 [Route("api/invoices")]
 [Authorize]
@@ -21,6 +22,7 @@ public class InvoicesController(
     private string CurrentUserRole =>
         User.FindFirstValue(ClaimTypes.Role)!;
 
+    /// <summary>List invoices with optional search, status filter, and pagination.</summary>
     [HttpGet]
     [Authorize(Policy = "AllRoles")]
     public async Task<IActionResult> GetInvoices([FromQuery] InvoiceListQuery query, CancellationToken ct)
@@ -29,6 +31,7 @@ public class InvoicesController(
         return Ok(result);
     }
 
+    /// <summary>Get a single invoice with its items, payments, and review details.</summary>
     [HttpGet("{id:guid}")]
     [Authorize(Policy = "AllRoles")]
     public async Task<IActionResult> GetInvoice(Guid id, CancellationToken ct)
@@ -37,6 +40,54 @@ public class InvoicesController(
         {
             var invoice = await invoiceService.GetInvoiceByIdAsync(id, ct);
             return Ok(invoice);
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
+    }
+
+    [HttpGet("{id:guid}/comments")]
+    [Authorize(Policy = "AllRoles")]
+    public async Task<IActionResult> GetComments(Guid id, CancellationToken ct)
+    {
+        try
+        {
+            var comments = await invoiceService.GetCommentsAsync(id, ct);
+            return Ok(comments);
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
+    }
+
+    [HttpPost("{id:guid}/comments")]
+    [Authorize(Policy = "AllRoles")]
+    public async Task<IActionResult> AddComment(Guid id, [FromBody] AddInvoiceCommentRequest request, CancellationToken ct)
+    {
+        if (string.IsNullOrWhiteSpace(request.Content))
+            return BadRequest(new { error = "Comment content is required." });
+
+        try
+        {
+            var comment = await invoiceService.AddCommentAsync(id, CurrentUserId, request.Content, ct);
+            return Ok(comment);
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
+    }
+
+    [HttpGet("{id:guid}/audit-logs")]
+    [Authorize(Policy = "AllRoles")]
+    public async Task<IActionResult> GetAuditLogs(Guid id, CancellationToken ct)
+    {
+        try
+        {
+            var logs = await invoiceService.GetAuditLogsAsync(id, ct);
+            return Ok(logs);
         }
         catch (KeyNotFoundException)
         {
@@ -90,6 +141,7 @@ public class InvoicesController(
         }
     }
 
+    /// <summary>Submit a Draft invoice for approval. Only the creator can submit.</summary>
     [HttpPost("{id:guid}/submit")]
     [Authorize(Policy = "CanCreateInvoice")]
     public async Task<IActionResult> SubmitInvoice(Guid id, CancellationToken ct)
@@ -104,6 +156,7 @@ public class InvoicesController(
         catch (UnauthorizedAccessException) { return Forbid(); }
     }
 
+    /// <summary>Approve a Submitted invoice. Requires Finance Manager or Admin role.</summary>
     [HttpPost("{id:guid}/approve")]
     [Authorize(Policy = "FinanceOrAdmin")]
     public async Task<IActionResult> ApproveInvoice(Guid id, CancellationToken ct)
@@ -117,6 +170,7 @@ public class InvoicesController(
         catch (InvalidOperationException ex) { return Conflict(new { error = ex.Message }); }
     }
 
+    /// <summary>Reject a Submitted invoice with a required reason.</summary>
     [HttpPost("{id:guid}/reject")]
     [Authorize(Policy = "FinanceOrAdmin")]
     public async Task<IActionResult> RejectInvoice(Guid id, [FromBody] ApprovalActionRequest request, CancellationToken ct)
@@ -133,6 +187,7 @@ public class InvoicesController(
         catch (InvalidOperationException ex) { return Conflict(new { error = ex.Message }); }
     }
 
+    /// <summary>Cancel a Draft or Submitted invoice.</summary>
     [HttpPost("{id:guid}/cancel")]
     [Authorize(Policy = "CanCreateInvoice")]
     public async Task<IActionResult> CancelInvoice(Guid id, CancellationToken ct)

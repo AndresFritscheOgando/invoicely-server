@@ -53,6 +53,38 @@ public class AuthService(AppDbContext db, ITokenService tokenService) : IAuthSer
         return ToDto(user);
     }
 
+    public async Task<UserDto> UpdateProfileAsync(Guid userId, UpdateProfileRequest request, CancellationToken ct = default)
+    {
+        var user = await db.Users.FirstOrDefaultAsync(u => u.Id == userId, ct)
+            ?? throw new KeyNotFoundException("User not found.");
+
+        var normalizedEmail = request.Email.Trim();
+        var emailInUse = await db.Users.AnyAsync(u => u.Id != userId && u.Email == normalizedEmail, ct);
+
+        if (emailInUse)
+            throw new InvalidOperationException("Email already registered.");
+
+        user.Name = request.Name.Trim();
+        user.Email = normalizedEmail;
+
+        await db.SaveChangesAsync(ct);
+
+        return ToDto(user);
+    }
+
+    public async Task ChangePasswordAsync(Guid userId, ChangePasswordRequest request, CancellationToken ct = default)
+    {
+        var user = await db.Users.FirstOrDefaultAsync(u => u.Id == userId, ct)
+            ?? throw new KeyNotFoundException("User not found.");
+
+        if (!BCrypt.Net.BCrypt.Verify(request.CurrentPassword, user.PasswordHash))
+            throw new UnauthorizedAccessException("Current password is incorrect.");
+
+        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+
+        await db.SaveChangesAsync(ct);
+    }
+
     private static UserDto ToDto(User u) =>
         new(u.Id, u.Name, u.Email, u.Role.ToString(), u.IsActive, u.CreatedAt);
 }

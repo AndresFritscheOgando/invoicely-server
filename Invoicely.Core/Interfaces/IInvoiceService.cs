@@ -13,4 +13,7 @@ public interface IInvoiceService
     Task<InvoiceDto> ApproveInvoiceAsync(Guid id, Guid reviewerId, CancellationToken ct = default);
     Task<InvoiceDto> RejectInvoiceAsync(Guid id, Guid reviewerId, string reason, CancellationToken ct = default);
     Task<InvoiceDto> CancelInvoiceAsync(Guid id, Guid userId, string userRole, CancellationToken ct = default);
+    Task<IEnumerable<InvoiceCommentDto>> GetCommentsAsync(Guid invoiceId, CancellationToken ct = default);
+    Task<InvoiceCommentDto> AddCommentAsync(Guid invoiceId, Guid userId, string content, CancellationToken ct = default);
+    Task<IEnumerable<AuditLogDto>> GetAuditLogsAsync(Guid invoiceId, CancellationToken ct = default);
 }

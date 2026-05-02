@@ -14,6 +14,12 @@ public record InvoiceItemDto(
     decimal UnitPrice,
     decimal Total);
 
+public record ActivityUserDto(
+    Guid Id,
+    string Name,
+    string Email,
+    string Role);
+
 public record InvoiceSummaryDto(
     Guid Id,
     string InvoiceNumber,
@@ -53,7 +59,26 @@ public record InvoiceDto(
     DateTime? ReviewedAt,
     string? RejectionReason);
 
+public record InvoiceCommentDto(
+    Guid Id,
+    Guid InvoiceId,
+    ActivityUserDto User,
+    string Content,
+    DateTime CreatedAt);
+
+public record AuditLogDto(
+    Guid Id,
+    ActivityUserDto User,
+    string EntityType,
+    Guid EntityId,
+    string Action,
+    string? OldValue,
+    string? NewValue,
+    DateTime CreatedAt);
+
 public record ApprovalActionRequest(string? RejectionReason);
+
+public record AddInvoiceCommentRequest(string Content);
 
 public record CreateInvoiceRequest(
     Guid VendorId,
